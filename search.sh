@@ -15,8 +15,10 @@ if [ "$mode" == "pattern" ]; then
 
   while :; do
     read -p "Pattern (ctrl+d to exit): " pattern || break
-    grep -n --color=always -r --include "*$extension" "$pattern" .
-    grep -l -r --include "*$extension" "$pattern" . > /tmp/recent_matches
+    grep --exclude-dir=".git" -n --color=always -r --include "*$extension" "$pattern" .
+    grep --exclude-dir=".git" -l -r --include "*$extension" "$pattern" . > /tmp/recent_matches
+    grep --exclude-dir=".git" -r --include "*$extension" "$pattern" . | wc -l | tr -d '\n'
+    echo " results found."
   done
 elif [ "$mode" == "project" ]; then
   dir=$(ls | fzf)
