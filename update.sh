@@ -5,5 +5,10 @@ cd all_repos
 
 gh api users/samchristywork/repos --paginate  --jq '.[] | "\(.name)"' | \
   while read repo; do
-    git clone "git@github.com:samchristywork/$repo.git"
+    test -d "$repo" || git clone "git@github.com:samchristywork/$repo.git"
+
+    (
+      cd "$repo"
+      git pull
+    )
   done
